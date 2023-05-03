@@ -2,27 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import SearchItem from '../SearchItem';
 import './searchList.scss';
-import { UseSearchResults } from '../../types';
-import { suggestionPopularCities } from '../../services/apiService';
+import { SearchListProps } from '../../types';
 
-const SearchList: React.FC<UseSearchResults> = ({
+const SearchList: React.FC<SearchListProps> = ({
 	suggestions,
 	isInputFocused,
 	inputValue,
-	cities,
+	popularCities,
+	onCitySelect,
 }) => {
-	const [suggestionBox, setSuggestionBox] = useState(null);
-
-	useEffect(() => {
-		const fetchPopularCities = async () => {
-			if (inputValue.length < 2) {
-				const popularCities = await suggestionPopularCities();
-				setSuggestionBox(popularCities);
-			}
-		};
-		fetchPopularCities();
-	}, [inputValue]);
-
 	if (!isInputFocused) {
 		return null;
 	}
@@ -71,7 +59,7 @@ const SearchList: React.FC<UseSearchResults> = ({
 						<div className="suggestion-words">
 							<h5>Quelques examples que vous pouvez recherchez</h5>
 							<div className="word-container">
-								{cities.map((city, index) => (
+								{popularCities.map((city, index) => (
 									<span key={index} className="word">
 										{city}
 									</span>
@@ -103,7 +91,11 @@ const SearchList: React.FC<UseSearchResults> = ({
 	return (
 		<div className="suggestion-container">
 			{suggestions.map((suggestion) => (
-				<SearchItem key={suggestion.city_id} suggestion={suggestion} />
+				<SearchItem
+					key={suggestion.city_id}
+					suggestion={suggestion}
+					onCitySelect={onCitySelect}
+				/>
 			))}
 		</div>
 	);

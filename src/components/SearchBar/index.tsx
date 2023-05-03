@@ -1,9 +1,9 @@
-import React, { useRef} from 'react';
+import React, { useRef } from 'react';
 
 import SearchList from '../SearchList';
 import { useSearch } from '../../hooks/useSearch';
-import './searchBar.scss';
 import { Suggestion } from '../../types';
+import './searchBar.scss';
 
 const SearchBar: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -15,16 +15,19 @@ const SearchBar: React.FC = () => {
 		suggestions,
 		isInputFocused,
 		inputValue,
-		cities,
+		popularCities,
 		overlayVisible,
 		isSearchbarAtTop,
 	} = useSearch(inputRef);
-
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onFinished();
 	};
+
+	const handleCitySelect = (selectedCitySuggestion: Suggestion)=>{
+		onFinished();
+	}
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
@@ -33,11 +36,11 @@ const SearchBar: React.FC = () => {
 	};
 
 	const handleOverlayClick = () => {
-		onBlur()
+		onBlur();
 		if (inputRef.current) {
 			inputRef.current.focus();
 		}
-	}
+	};
 	return (
 		<>
 			<form
@@ -55,10 +58,13 @@ const SearchBar: React.FC = () => {
 				/>
 				<button type="submit" aria-label="Submit search"></button>
 				<SearchList
-					suggestions={suggestions as Suggestion[]}
+					suggestions={suggestions}
 					isInputFocused={isInputFocused}
 					inputValue={inputValue}
-					cities={cities}
+					popularCities={popularCities}
+					overlayVisible={false}
+					isSearchbarAtTop={false}
+					onCitySelect={handleCitySelect}
 				/>
 			</form>
 			<div

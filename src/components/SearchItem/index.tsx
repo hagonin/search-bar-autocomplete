@@ -1,17 +1,15 @@
 import React from 'react';
 
 import './searchItem.scss';
-import { UseSearchResults } from '../../types';
+import { SearchItemProps } from '../../types';
 
-const SearchItem: React.FC<UseSearchResults> = ({ suggestion }) => {
-	console.log(suggestion);
+const SearchItem: React.FC<SearchItemProps> = ({
+	suggestion,
+	onCitySelect,
+}) => {
 	return (
 		<ul>
-			<li
-				key={suggestion.city_id}
-				// className={index === selectedSuggestionIndex ? 'selected' : ''}
-				role="option"
-			>
+			<li key={suggestion.city_id} onClick={() => onCitySelect(suggestion)}>
 				<span className="icon">
 					{suggestion.iscity ? (
 						<svg

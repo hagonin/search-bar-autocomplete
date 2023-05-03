@@ -12,11 +12,9 @@ export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearch
 	const [inputValue, setInputValue] = useState('');
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [isInputFocused, setIsInputFocused] = useState(false);
-	const [cities, setCities] = useState<string[]>([]);	
+	const [popularCities, setPopularCities] = useState<string[]>([]);	
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [isSearchbarAtTop, setIsSearchbarAtTop] = useState(false);
-
-	
 
 	const handleFocus = async () => {
 		setOverlayVisible(true);
@@ -29,7 +27,7 @@ export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearch
 			const fetchedCities = suggestionPopularCitites.map(
 				(city: City) => city.unique_name
 			);
-			setCities(fetchedCities);
+			setPopularCities(fetchedCities);
 		}
 	};
 
@@ -57,7 +55,6 @@ export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearch
 		await fetchSuggestionCities(inputValue);
 	};
 
-
 	return {
 		onFocus: handleFocus,
 		onBlur: handleBlur,
@@ -66,8 +63,8 @@ export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearch
 		suggestions,
 		isInputFocused,
 		inputValue,
-		cities,
+		popularCities,
 		overlayVisible,
 		isSearchbarAtTop,
-	};
+	}
 };
