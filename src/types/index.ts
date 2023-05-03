@@ -1,4 +1,13 @@
-export interface Suggestion {
+export interface SearchBase {
+	onFocus: () => void;
+	onBlur: () => void;
+	onChange: (searchText: string) => void;
+	onFinished: () => void;
+	overlayVisible: boolean;
+	isSearchbarAtTop: boolean;
+}
+
+export interface Suggestion extends SearchBase {
 	id: number;
 	iscity: boolean;
 	station_unique_name: string;
@@ -10,14 +19,7 @@ export interface City {
 	unique_name: string;
 }
 
-export interface UseSearchProps {
-	onFocus: () => void;
-	onBlur: () => void;
-	onChange: (searchText: string) => void;
-	onFinished: () => void;
-}
-
-export interface UseSearchResults extends UseSearchProps {
+export interface UseSearchResults extends SearchBase {
 	suggestions: Suggestion[];
 	isInputFocused: boolean;
 	inputValue: string;

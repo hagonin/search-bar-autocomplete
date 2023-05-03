@@ -7,14 +7,22 @@ import {
 } from '../services/apiService';
 import { Suggestion, UseSearchResults, City } from '../types';
 
-export const useSearch = (): UseSearchResults => {
+export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearchResults => {
+
 	const [inputValue, setInputValue] = useState('');
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [isInputFocused, setIsInputFocused] = useState(false);
-	const [cities, setCities] = useState<string[]>([]);
+	const [cities, setCities] = useState<string[]>([]);	
+	const [overlayVisible, setOverlayVisible] = useState(false);
+	const [isSearchbarAtTop, setIsSearchbarAtTop] = useState(false);
+
+	
 
 	const handleFocus = async () => {
+		setOverlayVisible(true);
 		setIsInputFocused(true);
+		setIsSearchbarAtTop(true);
+
 		const suggestionPopularCitites = await suggestionPopularCities();
 
 		if (suggestionPopularCitites && Array.isArray(suggestionPopularCitites)) {
@@ -25,9 +33,14 @@ export const useSearch = (): UseSearchResults => {
 		}
 	};
 
-	const handleBlur = async () => {
+	const handleBlur = () => {
+		setOverlayVisible(false);
 		setIsInputFocused(false);
-		setInputValue('')
+		setIsSearchbarAtTop(false);
+		setInputValue('');
+		if (inputRef.current) {
+			inputRef.current.value = '';
+		}
 	};
 
 	const handleChange = async (searchText: string) => {
@@ -43,7 +56,8 @@ export const useSearch = (): UseSearchResults => {
 	const handleIntputFinished = async () => {
 		await fetchSuggestionCities(inputValue);
 	};
-	console.log('suggestion useSearch', suggestions);
+
+
 	return {
 		onFocus: handleFocus,
 		onBlur: handleBlur,
@@ -53,5 +67,7 @@ export const useSearch = (): UseSearchResults => {
 		isInputFocused,
 		inputValue,
 		cities,
+		overlayVisible,
+		isSearchbarAtTop,
 	};
 };
