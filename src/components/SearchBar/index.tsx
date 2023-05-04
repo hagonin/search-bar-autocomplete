@@ -28,8 +28,8 @@ const SearchBar: React.FC = () => {
 		onFinished();
 	};
 
-	const handleCitySelect = (result: SearchResultItem) => {
-		onFinished();
+	const handleCitySelect = (result: SearchResultItem):void => {
+		onFinished(result);
 		setSelectedCity((prevSelectedCity) => [...prevSelectedCity, result]);
 	};
 
@@ -45,6 +45,8 @@ const SearchBar: React.FC = () => {
 			inputRef.current.focus();
 		}
 	};
+
+	console.log('selectedCity', selectedCity);
 	return (
 		<>
 			<form

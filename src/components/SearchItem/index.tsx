@@ -1,16 +1,20 @@
 import React from 'react';
 
 import './searchItem.scss';
-import { SearchItemProps } from '../../types';
+import { SearchItemProps, SearchResultItem } from '../../types';
 
 const SearchItem: React.FC<SearchItemProps> = ({
 	suggestion,
 	onCitySelected,
 }) => {
-	const handleCitySelect = () => {
-		if (onCitySelected) {
-			onCitySelected(suggestion);
-		}
+	const handleCitySelect = (): void => {
+		const result: SearchResultItem = {
+			id: suggestion.id,
+			local_name: suggestion.local_name,
+			unique_name: suggestion.station_unique_name,
+			city_id: suggestion.city_id,
+		};
+		onCitySelected(result);
 	};
 
 	return (

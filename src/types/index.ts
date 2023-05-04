@@ -11,13 +11,29 @@ export interface City {
 	unique_name: string;
 }
 
+export interface SearchResultItem {
+	id: number;
+	local_name: string;
+	unique_name: string;
+	city_id: number;
+}
+
 export interface UseSearchProps {
 	onFocus: () => void;
 	onBlur: () => void;
 	onChange: (searchText: string) => void;
-	onFinished: () => void;
+	onFinished: (selectedCity?: SearchResultItem) => void;
 	overlayVisible: boolean;
-	isSearchbarAtTop:boolean;
+	isSearchbarAtTop: boolean;
+}
+
+export interface SearchListProps
+	extends Omit<
+		UseSearchResults,
+		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
+	> {
+	suggestions: Suggestion[];
+	onCitySelected: (result: SearchResultItem) => void;
 }
 
 export interface UseSearchResults extends UseSearchProps {
@@ -27,25 +43,9 @@ export interface UseSearchResults extends UseSearchProps {
 	popularCities: string[];
 }
 
-export interface SearchListProps
-	extends Omit<
-		UseSearchResults,
-		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
-	> {
-	suggestions: Suggestion[];
-	onCitySelected?: (result: SearchResultItem) => void;
-}
-
 export interface SearchItemProps {
 	suggestion: Suggestion;
-	onCitySelected: (suggestion: Suggestion) => void;
-}
-
-export interface SearchResultItem {
-	id: number;
-	local_name: string;
-	unique_name: string;
-	city_id: number;
+	onCitySelected: (result: SearchResultItem) => void;
 }
 
 export interface SearchResultProps {

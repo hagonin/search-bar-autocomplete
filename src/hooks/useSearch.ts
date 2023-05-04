@@ -53,7 +53,8 @@ export const useSearch = (
 	};
 
 	const handleIntputFinished = async () => {
-		await fetchSuggestionCities(inputValue);
+		const fetchDepartCity = await fetchSuggestionCities(inputValue);
+		console.log('fetchDepartCity', fetchDepartCity);
 	};
 
 	return {
