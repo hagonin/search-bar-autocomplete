@@ -10,7 +10,9 @@ const SearchList: React.FC<SearchListProps> = ({
 	inputValue,
 	popularCities,
 	onCitySelected,
+	onClose
 }) => {
+
 	if (!isInputFocused) {
 		return null;
 	}
@@ -66,7 +68,7 @@ const SearchList: React.FC<SearchListProps> = ({
 								))}
 							</div>
 						</div>
-						<button className="close-btn">
+						<button className="close-btn" onClick={onClose}>
 							<svg
 								xmlnsXlink="http://www.w3.org/1999/xlink"
 								viewBox="0 0 24 24"
@@ -90,13 +92,15 @@ const SearchList: React.FC<SearchListProps> = ({
 
 	return (
 		<div className="suggestion-container">
-			{suggestions.map((suggestion) => (
-				<SearchItem
-					key={suggestion.city_id}
-					suggestion={suggestion}
-					onCitySelected={onCitySelected}
-				/>
-			))}
+			<ul>
+				{suggestions.map((suggestion) => (
+					<SearchItem
+						key={suggestion.city_id}
+						suggestion={suggestion}
+						onCitySelected={onCitySelected}
+					/>
+				))}
+			</ul>
 		</div>
 	);
 };

@@ -1,4 +1,3 @@
-
 export interface Suggestion {
 	id: number;
 	iscity: boolean;
@@ -20,7 +19,7 @@ export interface SearchResultItem {
 
 export interface UseSearchProps {
 	onFocus: () => void;
-	onBlur: () => void;
+	onBlur: (event: MouseEvent) => void;
 	onChange: (searchText: string) => void;
 	onFinished: (selectedCity?: SearchResultItem) => void;
 	overlayVisible: boolean;
@@ -33,7 +32,7 @@ export interface SearchListProps
 		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
 	> {
 	suggestions: Suggestion[];
-	onCitySelected: (result: SearchResultItem) => void;
+	onCitySelected: (result: SearchResultItem) => void;	
 }
 
 export interface UseSearchResults extends UseSearchProps {
@@ -41,6 +40,7 @@ export interface UseSearchResults extends UseSearchProps {
 	isInputFocused: boolean;
 	inputValue: string;
 	popularCities: string[];
+	onClose: () => void;
 }
 
 export interface SearchItemProps {
@@ -51,3 +51,24 @@ export interface SearchItemProps {
 export interface SearchResultProps {
 	result : SearchResultItem[];
 }
+
+// export interface SearchState {
+// 	inputValue: string;
+// 	citySuggestions: Array<{
+// 		id: number;
+// 		iscity: boolean;
+// 		station_unique_name: string;
+// 		local_name: string;
+// 		city_id: number;
+// 		unique_name: string;
+// 	}>;
+// 	overlayVisible: boolean;
+// 	isSearchbarAtTop: boolean;
+// }
+
+// export interface SearchFunctions {
+// 	onFocus: (value: boolean) => void;
+// 	onBlur: () => void;
+// 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+// 	onFinished: () => void;
+// }

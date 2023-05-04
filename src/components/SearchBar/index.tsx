@@ -2,15 +2,15 @@ import React, { useRef, useState } from 'react';
 
 import SearchList from '../SearchList';
 import { useSearch } from '../../hooks/useSearch';
-import { SearchResultItem, Suggestion } from '../../types';
+import { SearchResultItem } from '../../types';
 import './searchBar.scss';
 import SearchResult from '../SeachResult';
+import { MouseEventHandler } from 'react';
 
 const SearchBar: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const {
 		onFocus,
-		onBlur,
 		onChange,
 		onFinished,
 		suggestions,
@@ -19,6 +19,7 @@ const SearchBar: React.FC = () => {
 		popularCities,
 		overlayVisible,
 		isSearchbarAtTop,
+		onClose
 	} = useSearch(inputRef);
 
 	const [selectedCity, setSelectedCity] = useState<SearchResultItem[]>([]);
@@ -31,16 +32,33 @@ const SearchBar: React.FC = () => {
 	const handleCitySelect = (result: SearchResultItem):void => {
 		onFinished(result);
 		setSelectedCity((prevSelectedCity) => [...prevSelectedCity, result]);
+		console.log('result',result);
 	};
 
-	const handleKeyDown = (e: React.KeyboardEvent) => {
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter') {
-			onFinished();
+			e.preventDefault();
+			const selectedSuggestion = suggestions.find(
+				(suggestion) => suggestion.local_name === e.currentTarget.value
+			);
+
+			if (selectedSuggestion) {
+				const result: SearchResultItem = {
+					id: selectedSuggestion.id,
+					local_name: selectedSuggestion.local_name,
+					unique_name: selectedSuggestion.station_unique_name,
+					city_id: selectedSuggestion.city_id,
+				};
+
+				handleCitySelect(result);
+			} else {
+				onFinished();
+			}
 		}
 	};
 
+
 	const handleOverlayClick = () => {
-		onBlur();
 		if (inputRef.current) {
 			inputRef.current.focus();
 		}
@@ -57,7 +75,6 @@ const SearchBar: React.FC = () => {
 					ref={inputRef}
 					type="text"
 					onFocus={onFocus}
-					onBlur={onBlur}
 					onChange={(e) => onChange(e.target.value)}
 					onKeyDown={handleKeyDown}
 					placeholder="Une destination, demande..."
@@ -71,6 +88,7 @@ const SearchBar: React.FC = () => {
 					overlayVisible={false}
 					isSearchbarAtTop={false}
 					onCitySelected={handleCitySelect}
+					onClose={onClose}
 				/>
 			</form>
 			<div
