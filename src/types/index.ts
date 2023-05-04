@@ -33,11 +33,21 @@ export interface SearchListProps
 		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
 	> {
 	suggestions: Suggestion[];
-	onCitySelect: (suggestion: Suggestion) => void;
+	onCitySelected?: (result: SearchResultItem) => void;
 }
 
 export interface SearchItemProps {
 	suggestion: Suggestion;
-	onCitySelect: (suggestion: Suggestion) => void;
+	onCitySelected: (suggestion: Suggestion) => void;
 }
 
+export interface SearchResultItem {
+	id: number;
+	local_name: string;
+	unique_name: string;
+	city_id: number;
+}
+
+export interface SearchResultProps {
+	result : SearchResultItem[];
+}

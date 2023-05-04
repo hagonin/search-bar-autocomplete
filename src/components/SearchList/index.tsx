@@ -9,7 +9,7 @@ const SearchList: React.FC<SearchListProps> = ({
 	isInputFocused,
 	inputValue,
 	popularCities,
-	onCitySelect,
+	onCitySelected,
 }) => {
 	if (!isInputFocused) {
 		return null;
@@ -94,7 +94,7 @@ const SearchList: React.FC<SearchListProps> = ({
 				<SearchItem
 					key={suggestion.city_id}
 					suggestion={suggestion}
-					onCitySelect={onCitySelect}
+					onCitySelected={onCitySelected}
 				/>
 			))}
 		</div>

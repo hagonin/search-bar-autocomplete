@@ -5,14 +5,15 @@ import {
 	suggestionCities,
 	fetchSuggestionCities,
 } from '../services/apiService';
-import { Suggestion, UseSearchResults, City } from '../types';
+import { Suggestion, UseSearchResults, City, SearchResultItem } from '../types';
 
-export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearchResults => {
-
+export const useSearch = (
+	inputRef: React.RefObject<HTMLInputElement>
+): UseSearchResults => {
 	const [inputValue, setInputValue] = useState('');
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [isInputFocused, setIsInputFocused] = useState(false);
-	const [popularCities, setPopularCities] = useState<string[]>([]);	
+	const [popularCities, setPopularCities] = useState<string[]>([]);
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [isSearchbarAtTop, setIsSearchbarAtTop] = useState(false);
 
@@ -66,5 +67,5 @@ export const useSearch = (inputRef:React.RefObject<HTMLInputElement>): UseSearch
 		popularCities,
 		overlayVisible,
 		isSearchbarAtTop,
-	}
+	};
 };

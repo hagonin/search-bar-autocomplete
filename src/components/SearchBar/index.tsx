@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import SearchList from '../SearchList';
 import { useSearch } from '../../hooks/useSearch';
-import { Suggestion } from '../../types';
+import { SearchResultItem, Suggestion } from '../../types';
 import './searchBar.scss';
+import SearchResult from '../SeachResult';
 
 const SearchBar: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -20,14 +21,17 @@ const SearchBar: React.FC = () => {
 		isSearchbarAtTop,
 	} = useSearch(inputRef);
 
+	const [selectedCity, setSelectedCity] = useState<SearchResultItem[]>([]);
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onFinished();
 	};
 
-	const handleCitySelect = (selectedCitySuggestion: Suggestion)=>{
+	const handleCitySelect = (result: SearchResultItem) => {
 		onFinished();
-	}
+		setSelectedCity((prevSelectedCity) => [...prevSelectedCity, result]);
+	};
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === 'Enter') {
@@ -64,13 +68,14 @@ const SearchBar: React.FC = () => {
 					popularCities={popularCities}
 					overlayVisible={false}
 					isSearchbarAtTop={false}
-					onCitySelect={handleCitySelect}
+					onCitySelected={handleCitySelect}
 				/>
 			</form>
 			<div
 				className={`overlay ${overlayVisible ? ' visible' : ''}`}
 				onClick={handleOverlayClick}
 			></div>
+			{selectedCity && <SearchResult result={selectedCity} />}
 		</>
 	);
 };

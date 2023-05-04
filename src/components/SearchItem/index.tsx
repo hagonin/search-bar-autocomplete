@@ -5,11 +5,17 @@ import { SearchItemProps } from '../../types';
 
 const SearchItem: React.FC<SearchItemProps> = ({
 	suggestion,
-	onCitySelect,
+	onCitySelected,
 }) => {
+	const handleCitySelect = () => {
+		if (onCitySelected) {
+			onCitySelected(suggestion);
+		}
+	};
+
 	return (
 		<ul>
-			<li key={suggestion.city_id} onClick={() => onCitySelect(suggestion)}>
+			<li key={suggestion.city_id} onClick={handleCitySelect}>
 				<span className="icon">
 					{suggestion.iscity ? (
 						<svg
