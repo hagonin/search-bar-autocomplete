@@ -1,14 +1,22 @@
+import { useState } from 'react';
 import { SearchResultProps } from '../../types';
+import './searchResult.scss';
 
-const SearchResult: React.FC<SearchResultProps> = ({
-	selectedSingleCity,
-}) => {
-	console.log('res', selectedSingleCity);
+const SearchResult: React.FC<SearchResultProps> = ({ selectedSingleCity }) => {
+	console.log('cities', selectedSingleCity);
 	return (
 		<div className="search-result">
-			{selectedSingleCity.map((city) => (
-				<p key={city.city_id}>{city.local_name}</p>
-			))}
+			<p key={selectedSingleCity[0].city_id}>
+				Here is potential cities depart from
+				<span className="search-selected-city">
+					{selectedSingleCity[0].unique_name}
+				</span>
+			</p>
+			{/* <ul>
+				{cities.map((city) => (
+					<li key={city.id}>{city.local_name}</li> //
+				))}
+			</ul> */}
 		</div>
 	);
 };

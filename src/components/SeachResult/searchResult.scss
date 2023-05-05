@@ -1,6 +1,13 @@
 .search-result {
-    background-color: #f8f8f8;
     padding: 16px;
     margin-top: 8px;
     border-radius: 5px;
+    color: white;
+
+    .search-selected-city {
+        color: orange;
+        margin: 5px;
+    }
+
+
 }

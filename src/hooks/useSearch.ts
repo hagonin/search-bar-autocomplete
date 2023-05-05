@@ -5,7 +5,7 @@ import {
 	suggestionCities,
 	fetchSuggestionCities,
 } from '../services/apiService';
-import { SearchResultItem, Suggestion, UseSearchResults } from '../types';
+import { Suggestion, UseSearchResults } from '../types';
 
 export const useSearch = (
 	inputRef: React.RefObject<HTMLInputElement>
@@ -70,10 +70,15 @@ export const useSearch = (
 	const handleIntputFinished = async () => {
 		const fetchDepartCity = await fetchSuggestionCities(inputValue);
 		console.log('fetchDepartCity', fetchDepartCity);
+		setOverlayVisible(false);
+		setIsInputFocused(false);
+		setIsSearchbarAtTop(false);
 	};
 
 	const handleCloseButton = () => {
 		setIsInputFocused(false)
+		setOverlayVisible(false);
+		setIsSearchbarAtTop(false);
 	}
 
 	return {

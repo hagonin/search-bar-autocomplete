@@ -28,16 +28,6 @@ export interface UseSearchResults {
 	isSearchbarAtTop: boolean;
 }
 
-// export interface SearchListProps {
-// 	suggestions: Suggestion[];
-// 	isInputFocused: boolean;
-// 	inputValue: string;
-// 	popularCities: string[];
-// 	onCitySelected: (result: SearchResultItem) => void;
-// 	onClose: () => void;
-// 	highlightedIndex: number;
-// 	setHighlightedIndex: (index: number) => void;
-// }
 export interface SearchListProps
 	extends Omit<
 		UseSearchResults,
@@ -45,15 +35,23 @@ export interface SearchListProps
 	> {
 	suggestions: Suggestion[];
 	onCitySelected: (result: SearchResultItem) => void;
-	highlightedIndex: number; 
+	highlightedIndex: number;
+	setHighlightedIndex: (index: number) => void;
 }
 
 export interface SearchItemProps {
 	suggestion: Suggestion;
 	onCitySelected: (suggestion: Suggestion) => void;
-	isActive: boolean;
+	isHighlighted: boolean;
+	// onMouseOver: () => void;
 }
 
 export interface SearchResultProps {
 	selectedSingleCity: SearchResultItem[];
+	// cities: SearchResultItem[];
+}
+
+export interface UseScrollProps {
+	highlightedIndex: number;
+	ITEM_HEIGHT: number;
 }

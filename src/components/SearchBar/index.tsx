@@ -6,6 +6,8 @@ import { SearchResultItem } from '../../types';
 import './searchBar.scss';
 import SearchResult from '../SeachResult';
 
+
+
 const SearchBar: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const {
@@ -20,10 +22,11 @@ const SearchBar: React.FC = () => {
 		overlayVisible,
 		isSearchbarAtTop,
 	} = useSearch(inputRef);
-
+	
 	const [selectedCity, setSelectedCity] = useState<SearchResultItem[]>([]);
 	const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
-
+	
+	
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onFinished();
