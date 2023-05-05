@@ -1,9 +1,10 @@
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import SearchItem from '../SearchItem';
 import './searchList.scss';
 import { SearchListProps } from '../../types';
 import { CloseBtnIcon, HandIcon } from '../../utils/icons';
+
 
 const SearchList: React.FC<SearchListProps> = ({
 	suggestions,
@@ -53,7 +54,7 @@ const SearchList: React.FC<SearchListProps> = ({
 						key={suggestion.city_id}
 						suggestion={suggestion}
 						onCitySelected={onCitySelected}
-						isActive={index === highlightedIndex}
+						isHighlighted={index === highlightedIndex}
 					/>
 				))}
 			</ul>

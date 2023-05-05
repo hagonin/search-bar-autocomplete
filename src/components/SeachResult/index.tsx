@@ -1,14 +1,22 @@
 import { SearchResultProps } from '../../types';
+import './searchResult.scss';
 
 const SearchResult: React.FC<SearchResultProps> = ({
 	selectedSingleCity,
+	departCities,
 }) => {
-	console.log('res', selectedSingleCity);
+	console.log('selectedSingleCity', selectedSingleCity);
 	return (
 		<div className="search-result">
-			{selectedSingleCity.map((city) => (
-				<p key={city.city_id}>{city.local_name}</p>
-			))}
+			<p>Les villes potentielles au départ de</p>
+			<p className="search-selected-city">
+				{selectedSingleCity[0].unique_name}
+			</p>
+			<ul>
+				{departCities.map((city) => (
+					<li key={city.id}>{city.local_name}</li> //
+				))}
+			</ul>
 		</div>
 	);
 };

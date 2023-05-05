@@ -3,8 +3,8 @@ import React, { useRef, useState } from 'react';
 import SearchList from '../SearchList';
 import { useSearch } from '../../hooks/useSearch';
 import { SearchResultItem } from '../../types';
-import './searchBar.scss';
 import SearchResult from '../SeachResult';
+import './searchBar.scss';
 
 const SearchBar: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -19,6 +19,7 @@ const SearchBar: React.FC = () => {
 		popularCities,
 		overlayVisible,
 		isSearchbarAtTop,
+		departCities,
 	} = useSearch(inputRef);
 
 	const [selectedCity, setSelectedCity] = useState<SearchResultItem[]>([]);
@@ -29,12 +30,12 @@ const SearchBar: React.FC = () => {
 		onFinished();
 	};
 
-	const handleCitySelect = (selectedSingleCity: SearchResultItem): void => {
+	const handleSelectCity = (selectedSingleCity: SearchResultItem): void => {
 		onFinished(selectedSingleCity);
 		setSelectedCity([selectedSingleCity]);
 	};
 
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'ArrowUp') {
 			e.preventDefault();
 			setHighlightedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -46,7 +47,7 @@ const SearchBar: React.FC = () => {
 		} else if (e.key === 'Enter') {
 			e.preventDefault();
 			if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
-				handleCitySelect(suggestions[highlightedIndex]);
+				handleSelectCity(suggestions[highlightedIndex]);
 			} else {
 				onFinished();
 			}
@@ -57,7 +58,6 @@ const SearchBar: React.FC = () => {
 		inputRef.current?.focus();
 	};
 
-	console.log('selectedCity', selectedCity);
 	return (
 		<>
 			<form
@@ -69,11 +69,12 @@ const SearchBar: React.FC = () => {
 					type="text"
 					onFocus={onFocus}
 					onChange={(e) => onChange(e.target.value)}
-					onKeyDown={handleKeyDown}
+					onKeyDown={handleKeyPress}
 					placeholder="Une destination, demande..."
 				/>
 				<button type="submit" aria-label="Submit search"></button>
 				<SearchList
+					departCities={[]}
 					{...{
 						suggestions,
 						isInputFocused,
@@ -81,7 +82,7 @@ const SearchBar: React.FC = () => {
 						popularCities,
 						overlayVisible,
 						isSearchbarAtTop,
-						onCitySelected: handleCitySelect,
+						onCitySelected: handleSelectCity,
 						onClose,
 						highlightedIndex,
 						setHighlightedIndex,
@@ -93,7 +94,10 @@ const SearchBar: React.FC = () => {
 				onClick={handleOverlayClick}
 			></div>
 			{selectedCity.length > 0 && (
-				<SearchResult selectedSingleCity={selectedCity} />
+				<SearchResult
+					selectedSingleCity={selectedCity}
+					departCities={departCities}
+				/>
 			)}
 		</>
 	);

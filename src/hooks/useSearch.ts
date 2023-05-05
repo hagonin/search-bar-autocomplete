@@ -14,6 +14,8 @@ export const useSearch = (
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [isInputFocused, setIsInputFocused] = useState(false);
 	const [popularCities, setPopularCities] = useState<string[]>([]);
+	const [departCities, setDepartCities] = useState<SearchResultItem[]>([]);
+
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [isSearchbarAtTop, setIsSearchbarAtTop] = useState(false);
 
@@ -24,7 +26,7 @@ export const useSearch = (
 
 		const popularCitySuggestions = await suggestionPopularCities();
 
-		if (popularCitySuggestions && Array.isArray(popularCitySuggestions)) {
+		if (!!popularCitySuggestions.length) {
 			const fetchedCities = popularCitySuggestions.map(
 				(city: Suggestion) => city.unique_name
 			);
@@ -39,10 +41,7 @@ export const useSearch = (
 			!target.closest('.search-bar') &&
 			!target.closest('.suggestions-container')
 		) {
-			setOverlayVisible(false);
-			setIsInputFocused(false);
-			setIsSearchbarAtTop(false);
-			setInputValue('');
+			handleCloseSearch();
 			if (inputRef.current) {
 				inputRef.current.value = '';
 			}
@@ -59,34 +58,38 @@ export const useSearch = (
 
 	const handleSearchChange = async (searchText: string) => {
 		setInputValue(searchText);
-		if (searchText) {
-			const newSuggestions = await suggestionCities(searchText);
-			setSuggestions(newSuggestions);
-		} else {
-			setSuggestions([]);
+
+		setSuggestions(searchText ? await suggestionCities(searchText) : []);
+	};
+
+	const handleInputFinished = async () => {
+		const fetchDepartCity = await fetchSuggestionCities(inputValue);
+		setDepartCities(fetchDepartCity);
+
+		handleCloseSearch();
+		if (inputRef.current) {
+			inputRef.current.value = '';
 		}
 	};
 
-	const handleIntputFinished = async () => {
-		const fetchDepartCity = await fetchSuggestionCities(inputValue);
-		console.log('fetchDepartCity', fetchDepartCity);
+	const handleCloseSearch = () => {
+		setIsInputFocused(false);
+		setOverlayVisible(false);
+		setIsSearchbarAtTop(false);
 	};
-
-	const handleCloseButton = () => {
-		setIsInputFocused(false)
-	}
 
 	return {
 		onFocus: handleSearchFocus,
 		onBlur: handleSearchBlur,
 		onChange: handleSearchChange,
-		onFinished: handleIntputFinished,
-		onClose: handleCloseButton,
+		onFinished: handleInputFinished,
+		onClose: handleCloseSearch,
 		suggestions,
 		isInputFocused,
 		inputValue,
 		popularCities,
 		overlayVisible,
 		isSearchbarAtTop,
+		departCities,
 	};
 };

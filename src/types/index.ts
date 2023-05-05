@@ -5,6 +5,7 @@ export interface Suggestion {
 	local_name: string;
 	city_id: number;
 	unique_name: string;
+	departCities: string[];
 }
 
 export interface SearchResultItem {
@@ -12,6 +13,7 @@ export interface SearchResultItem {
 	local_name: string;
 	unique_name: string;
 	city_id: number;
+	departCities: string[];
 }
 
 export interface UseSearchResults {
@@ -26,18 +28,9 @@ export interface UseSearchResults {
 	popularCities: string[];
 	overlayVisible: boolean;
 	isSearchbarAtTop: boolean;
+	departCities: SearchResultItem[];
 }
 
-// export interface SearchListProps {
-// 	suggestions: Suggestion[];
-// 	isInputFocused: boolean;
-// 	inputValue: string;
-// 	popularCities: string[];
-// 	onCitySelected: (result: SearchResultItem) => void;
-// 	onClose: () => void;
-// 	highlightedIndex: number;
-// 	setHighlightedIndex: (index: number) => void;
-// }
 export interface SearchListProps
 	extends Omit<
 		UseSearchResults,
@@ -45,15 +38,17 @@ export interface SearchListProps
 	> {
 	suggestions: Suggestion[];
 	onCitySelected: (result: SearchResultItem) => void;
-	highlightedIndex: number; 
+	highlightedIndex: number;
+	setHighlightedIndex: (index: number) => void;
 }
 
 export interface SearchItemProps {
 	suggestion: Suggestion;
 	onCitySelected: (suggestion: Suggestion) => void;
-	isActive: boolean;
+	isHighlighted: boolean;
 }
 
 export interface SearchResultProps {
 	selectedSingleCity: SearchResultItem[];
+	departCities: SearchResultItem[];
 }

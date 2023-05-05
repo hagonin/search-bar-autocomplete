@@ -1,6 +1,44 @@
 .search-result {
-    background-color: #f8f8f8;
-    padding: 16px;
-    margin-top: 8px;
-    border-radius: 5px;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 2rem;
+    color: black;
+    background-color: white;
+
+    p {
+        font-size: 24px;
+        font-weight: bold;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    .search-selected-city {
+        color: #ff295e;
+        font-weight: bold;
+        margin-left: 5px;
+        text-transform: uppercase;
+        text-align: center;
+
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            font-size: 18px;
+            color: #000000;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+
+            &:hover {
+                background-color: #f5f9ee;
+            }
+        }
+
+    }
+
 }

@@ -7,12 +7,11 @@ import { CityIcon, StationIcon } from '../../utils/icons';
 const SearchItem: React.FC<SearchItemProps> = ({
 	suggestion,
 	onCitySelected,
-	isActive,
+	isHighlighted,
 }) => {
-
 	return (
 		<li
-			className={`${isActive ? ' active' : ''}`}
+			className={`${isHighlighted ? ' highlighted' : ''}`}
 			onClick={() => onCitySelected(suggestion)}
 		>
 			<span className="icon">
