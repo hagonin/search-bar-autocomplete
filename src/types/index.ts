@@ -4,9 +4,6 @@ export interface Suggestion {
 	station_unique_name: string;
 	local_name: string;
 	city_id: number;
-}
-
-export interface City {
 	unique_name: string;
 }
 
@@ -17,58 +14,46 @@ export interface SearchResultItem {
 	city_id: number;
 }
 
-export interface UseSearchProps {
+export interface UseSearchResults {
 	onFocus: () => void;
 	onBlur: (event: MouseEvent) => void;
 	onChange: (searchText: string) => void;
-	onFinished: (selectedCity?: SearchResultItem) => void;
+	onFinished: (selectedCity?: SearchResultItem) => Promise<void>;
+	onClose: () => void;
+	suggestions: Suggestion[];
+	isInputFocused: boolean;
+	inputValue: string;
+	popularCities: string[];
 	overlayVisible: boolean;
 	isSearchbarAtTop: boolean;
 }
 
+// export interface SearchListProps {
+// 	suggestions: Suggestion[];
+// 	isInputFocused: boolean;
+// 	inputValue: string;
+// 	popularCities: string[];
+// 	onCitySelected: (result: SearchResultItem) => void;
+// 	onClose: () => void;
+// 	highlightedIndex: number;
+// 	setHighlightedIndex: (index: number) => void;
+// }
 export interface SearchListProps
 	extends Omit<
 		UseSearchResults,
 		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
 	> {
 	suggestions: Suggestion[];
-	onCitySelected: (result: SearchResultItem) => void;	
-}
-
-export interface UseSearchResults extends UseSearchProps {
-	suggestions: Suggestion[];
-	isInputFocused: boolean;
-	inputValue: string;
-	popularCities: string[];
-	onClose: () => void;
+	onCitySelected: (result: SearchResultItem) => void;
+	highlightedIndex: number; 
 }
 
 export interface SearchItemProps {
 	suggestion: Suggestion;
-	onCitySelected: (result: SearchResultItem) => void;
+	onCitySelected: (suggestion: Suggestion) => void;
+	isActive: boolean;
 }
 
 export interface SearchResultProps {
-	result : SearchResultItem[];
+	selectedSingleCity: SearchResultItem[];
 }
-
-// export interface SearchState {
-// 	inputValue: string;
-// 	citySuggestions: Array<{
-// 		id: number;
-// 		iscity: boolean;
-// 		station_unique_name: string;
-// 		local_name: string;
-// 		city_id: number;
-// 		unique_name: string;
-// 	}>;
-// 	overlayVisible: boolean;
-// 	isSearchbarAtTop: boolean;
-// }
-
-// export interface SearchFunctions {
-// 	onFocus: (value: boolean) => void;
-// 	onBlur: () => void;
-// 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-// 	onFinished: () => void;
-// }
