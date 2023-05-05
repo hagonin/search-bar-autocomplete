@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import SearchList from '../SearchList';
 import { useSearch } from '../../hooks/useSearch';
-import { SearchResultItem, Suggestion } from '../../types';
+import { SearchResultItem } from '../../types';
 import './searchBar.scss';
 import SearchResult from '../SeachResult';
 
@@ -10,9 +10,9 @@ const SearchBar: React.FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const {
 		onFocus,
-		onBlur,
 		onChange,
 		onFinished,
+		onClose,
 		suggestions,
 		isInputFocused,
 		inputValue,
@@ -22,29 +22,42 @@ const SearchBar: React.FC = () => {
 	} = useSearch(inputRef);
 
 	const [selectedCity, setSelectedCity] = useState<SearchResultItem[]>([]);
+	const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onFinished();
 	};
 
-	const handleCitySelect = (result: SearchResultItem) => {
-		onFinished();
-		setSelectedCity((prevSelectedCity) => [...prevSelectedCity, result]);
+	const handleCitySelect = (selectedSingleCity: SearchResultItem): void => {
+		onFinished(selectedSingleCity);
+		setSelectedCity([selectedSingleCity]);
 	};
 
-	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter') {
-			onFinished();
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			setHighlightedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+		} else if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			setHighlightedIndex((prevIndex) =>
+				Math.min(prevIndex + 1, suggestions.length - 1)
+			);
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			if (highlightedIndex >= 0 && highlightedIndex < suggestions.length) {
+				handleCitySelect(suggestions[highlightedIndex]);
+			} else {
+				onFinished();
+			}
 		}
 	};
 
 	const handleOverlayClick = () => {
-		onBlur();
-		if (inputRef.current) {
-			inputRef.current.focus();
-		}
+		inputRef.current?.focus();
 	};
+
+	console.log('selectedCity', selectedCity);
 	return (
 		<>
 			<form
@@ -55,27 +68,33 @@ const SearchBar: React.FC = () => {
 					ref={inputRef}
 					type="text"
 					onFocus={onFocus}
-					onBlur={onBlur}
 					onChange={(e) => onChange(e.target.value)}
 					onKeyDown={handleKeyDown}
 					placeholder="Une destination, demande..."
 				/>
 				<button type="submit" aria-label="Submit search"></button>
 				<SearchList
-					suggestions={suggestions}
-					isInputFocused={isInputFocused}
-					inputValue={inputValue}
-					popularCities={popularCities}
-					overlayVisible={false}
-					isSearchbarAtTop={false}
-					onCitySelected={handleCitySelect}
+					{...{
+						suggestions,
+						isInputFocused,
+						inputValue,
+						popularCities,
+						overlayVisible,
+						isSearchbarAtTop,
+						onCitySelected: handleCitySelect,
+						onClose,
+						highlightedIndex,
+						setHighlightedIndex,
+					}}
 				/>
 			</form>
 			<div
 				className={`overlay ${overlayVisible ? ' visible' : ''}`}
 				onClick={handleOverlayClick}
 			></div>
-			{selectedCity && <SearchResult result={selectedCity} />}
+			{selectedCity.length > 0 && (
+				<SearchResult selectedSingleCity={selectedCity} />
+			)}
 		</>
 	);
 };

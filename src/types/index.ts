@@ -1,44 +1,10 @@
-
 export interface Suggestion {
 	id: number;
 	iscity: boolean;
 	station_unique_name: string;
 	local_name: string;
 	city_id: number;
-}
-
-export interface City {
 	unique_name: string;
-}
-
-export interface UseSearchProps {
-	onFocus: () => void;
-	onBlur: () => void;
-	onChange: (searchText: string) => void;
-	onFinished: () => void;
-	overlayVisible: boolean;
-	isSearchbarAtTop:boolean;
-}
-
-export interface UseSearchResults extends UseSearchProps {
-	suggestions: Suggestion[];
-	isInputFocused: boolean;
-	inputValue: string;
-	popularCities: string[];
-}
-
-export interface SearchListProps
-	extends Omit<
-		UseSearchResults,
-		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
-	> {
-	suggestions: Suggestion[];
-	onCitySelected?: (result: SearchResultItem) => void;
-}
-
-export interface SearchItemProps {
-	suggestion: Suggestion;
-	onCitySelected: (suggestion: Suggestion) => void;
 }
 
 export interface SearchResultItem {
@@ -48,6 +14,46 @@ export interface SearchResultItem {
 	city_id: number;
 }
 
+export interface UseSearchResults {
+	onFocus: () => void;
+	onBlur: (event: MouseEvent) => void;
+	onChange: (searchText: string) => void;
+	onFinished: (selectedCity?: SearchResultItem) => Promise<void>;
+	onClose: () => void;
+	suggestions: Suggestion[];
+	isInputFocused: boolean;
+	inputValue: string;
+	popularCities: string[];
+	overlayVisible: boolean;
+	isSearchbarAtTop: boolean;
+}
+
+// export interface SearchListProps {
+// 	suggestions: Suggestion[];
+// 	isInputFocused: boolean;
+// 	inputValue: string;
+// 	popularCities: string[];
+// 	onCitySelected: (result: SearchResultItem) => void;
+// 	onClose: () => void;
+// 	highlightedIndex: number;
+// 	setHighlightedIndex: (index: number) => void;
+// }
+export interface SearchListProps
+	extends Omit<
+		UseSearchResults,
+		'onFocus' | 'onBlur' | 'onChange' | 'onFinished'
+	> {
+	suggestions: Suggestion[];
+	onCitySelected: (result: SearchResultItem) => void;
+	highlightedIndex: number; 
+}
+
+export interface SearchItemProps {
+	suggestion: Suggestion;
+	onCitySelected: (suggestion: Suggestion) => void;
+	isActive: boolean;
+}
+
 export interface SearchResultProps {
-	result : SearchResultItem[];
+	selectedSingleCity: SearchResultItem[];
 }

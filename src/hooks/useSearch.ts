@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
 	suggestionPopularCities,
 	suggestionCities,
 	fetchSuggestionCities,
 } from '../services/apiService';
-import { Suggestion, UseSearchResults, City, SearchResultItem } from '../types';
+import { SearchResultItem, Suggestion, UseSearchResults } from '../types';
 
 export const useSearch = (
 	inputRef: React.RefObject<HTMLInputElement>
@@ -17,35 +17,50 @@ export const useSearch = (
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [isSearchbarAtTop, setIsSearchbarAtTop] = useState(false);
 
-	const handleFocus = async () => {
+	const handleSearchFocus = async () => {
 		setOverlayVisible(true);
 		setIsInputFocused(true);
 		setIsSearchbarAtTop(true);
 
-		const suggestionPopularCitites = await suggestionPopularCities();
+		const popularCitySuggestions = await suggestionPopularCities();
 
-		if (suggestionPopularCitites && Array.isArray(suggestionPopularCitites)) {
-			const fetchedCities = suggestionPopularCitites.map(
-				(city: City) => city.unique_name
+		if (popularCitySuggestions && Array.isArray(popularCitySuggestions)) {
+			const fetchedCities = popularCitySuggestions.map(
+				(city: Suggestion) => city.unique_name
 			);
 			setPopularCities(fetchedCities);
 		}
 	};
 
-	const handleBlur = () => {
-		setOverlayVisible(false);
-		setIsInputFocused(false);
-		setIsSearchbarAtTop(false);
-		setInputValue('');
-		if (inputRef.current) {
-			inputRef.current.value = '';
+	const handleSearchBlur = (event: MouseEvent) => {
+		const target = event.target as HTMLElement;
+
+		if (
+			!target.closest('.search-bar') &&
+			!target.closest('.suggestions-container')
+		) {
+			setOverlayVisible(false);
+			setIsInputFocused(false);
+			setIsSearchbarAtTop(false);
+			setInputValue('');
+			if (inputRef.current) {
+				inputRef.current.value = '';
+			}
 		}
 	};
 
-	const handleChange = async (searchText: string) => {
+	useEffect(() => {
+		document.addEventListener('mousedown', handleSearchBlur);
+
+		return () => {
+			document.removeEventListener('mousedown', handleSearchBlur);
+		};
+	}, []);
+
+	const handleSearchChange = async (searchText: string) => {
 		setInputValue(searchText);
 		if (searchText) {
-			const newSuggestions = await suggestionCities(inputValue);
+			const newSuggestions = await suggestionCities(searchText);
 			setSuggestions(newSuggestions);
 		} else {
 			setSuggestions([]);
@@ -53,14 +68,20 @@ export const useSearch = (
 	};
 
 	const handleIntputFinished = async () => {
-		await fetchSuggestionCities(inputValue);
+		const fetchDepartCity = await fetchSuggestionCities(inputValue);
+		console.log('fetchDepartCity', fetchDepartCity);
 	};
 
+	const handleCloseButton = () => {
+		setIsInputFocused(false)
+	}
+
 	return {
-		onFocus: handleFocus,
-		onBlur: handleBlur,
-		onChange: handleChange,
+		onFocus: handleSearchFocus,
+		onBlur: handleSearchBlur,
+		onChange: handleSearchChange,
 		onFinished: handleIntputFinished,
+		onClose: handleCloseButton,
 		suggestions,
 		isInputFocused,
 		inputValue,

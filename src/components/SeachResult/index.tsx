@@ -1,22 +1,15 @@
 import { SearchResultProps } from '../../types';
 
-const SearchResult: React.FC<SearchResultProps> = ({ result }) => {
+const SearchResult: React.FC<SearchResultProps> = ({
+	selectedSingleCity,
+}) => {
+	console.log('res', selectedSingleCity);
 	return (
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-				</tr>
-			</thead>
-			<tbody>
-				{result.map((city) => (
-					<tr key={city.id}>
-						<td>{city.id}</td>
-						<td>{city.local_name}</td>
-					</tr>
-				))}
-			</tbody>
-		</table>
+		<div className="search-result">
+			{selectedSingleCity.map((city) => (
+				<p key={city.city_id}>{city.local_name}</p>
+			))}
+		</div>
 	);
 };
 
