@@ -4,9 +4,7 @@ import SearchItem from '../SearchItem';
 import './searchList.scss';
 import { SearchListProps } from '../../types';
 import { CloseBtnIcon, HandIcon } from '../../utils/icons';
-import { useScroll } from '../../hooks/useScroll';
 
-const ITEM_HEIGHT = 20;
 
 const SearchList: React.FC<SearchListProps> = ({
 	suggestions,
@@ -16,14 +14,7 @@ const SearchList: React.FC<SearchListProps> = ({
 	onCitySelected,
 	onClose,
 	highlightedIndex,
-	setHighlightedIndex,
 }) => {
-	const listCitiesRef = useScroll({ highlightedIndex, ITEM_HEIGHT });
-
-	// const handleMouseOver = (index: number) => {
-	// 	setHighlightedIndex(index);
-	// };
-
 	if (!isInputFocused) {
 		return null;
 	}
@@ -57,14 +48,13 @@ const SearchList: React.FC<SearchListProps> = ({
 
 	return (
 		<div className="suggestions-container">
-			<ul ref={listCitiesRef}>
+			<ul>
 				{suggestions.map((suggestion, index) => (
 					<SearchItem
 						key={suggestion.city_id}
 						suggestion={suggestion}
 						onCitySelected={onCitySelected}
 						isHighlighted={index === highlightedIndex}
-						// onMouseOver={() => handleMouseOver(index)}
 					/>
 				))}
 			</ul>

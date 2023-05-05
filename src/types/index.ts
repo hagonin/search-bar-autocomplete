@@ -5,6 +5,7 @@ export interface Suggestion {
 	local_name: string;
 	city_id: number;
 	unique_name: string;
+	departCities: string[];
 }
 
 export interface SearchResultItem {
@@ -12,6 +13,7 @@ export interface SearchResultItem {
 	local_name: string;
 	unique_name: string;
 	city_id: number;
+	departCities: string[];
 }
 
 export interface UseSearchResults {
@@ -26,6 +28,7 @@ export interface UseSearchResults {
 	popularCities: string[];
 	overlayVisible: boolean;
 	isSearchbarAtTop: boolean;
+	departCities: SearchResultItem[];
 }
 
 export interface SearchListProps
@@ -43,15 +46,9 @@ export interface SearchItemProps {
 	suggestion: Suggestion;
 	onCitySelected: (suggestion: Suggestion) => void;
 	isHighlighted: boolean;
-	// onMouseOver: () => void;
 }
 
 export interface SearchResultProps {
 	selectedSingleCity: SearchResultItem[];
-	// cities: SearchResultItem[];
-}
-
-export interface UseScrollProps {
-	highlightedIndex: number;
-	ITEM_HEIGHT: number;
+	departCities: SearchResultItem[];
 }

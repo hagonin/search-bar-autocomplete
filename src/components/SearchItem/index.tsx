@@ -8,13 +8,11 @@ const SearchItem: React.FC<SearchItemProps> = ({
 	suggestion,
 	onCitySelected,
 	isHighlighted,
-	// onMouseOver,
 }) => {
 	return (
 		<li
 			className={`${isHighlighted ? ' highlighted' : ''}`}
 			onClick={() => onCitySelected(suggestion)}
-			// onMouseOver={onMouseOver}
 		>
 			<span className="icon">
 				{suggestion.iscity ? <CityIcon /> : <StationIcon />}
