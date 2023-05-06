@@ -2,13 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 100vh;
     padding: 1rem;
-    background-color:black;
+    background-color: black;
 }
 
-h1 {
+p {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
@@ -17,6 +17,13 @@ h1 {
 }
 
 .search-bar {
-    width: 80%;
+    width: 90%;
     max-width: 600px
+}
+
+
+@media only screen and (max-width: 576px) {
+    .home {
+        padding: 0.5rem;
+    }
 }
