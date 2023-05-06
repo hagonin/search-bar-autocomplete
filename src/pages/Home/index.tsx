@@ -6,7 +6,7 @@ import SearchBar from '../../components/SearchBar';
 const Home: React.FC = () => {
 	return (
 		<div className="home">
-			<h1>Recherchez vos voyages, trajets courts et bien plus encore...</h1>
+			<p>Recherchez vos voyages, trajets courts et bien plus encore...</p>
 			<SearchBar />
 		</div>
 	);
